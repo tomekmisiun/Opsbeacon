@@ -1,0 +1,11 @@
+# Local AI tooling
+/.agents/
+/.claude/
+/.codex/
+/.cursor/rules/
+/docs/
+/scripts/
+/skills/
+/AGENTS.md
+/CLAUDE.md
+gi
