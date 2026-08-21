@@ -16,6 +16,8 @@ T-002 · Add Terraform/ECS V2 plan · (Phase 1)
 ## Done
 <!-- Move here with completion date, newest on top: -->
 <!-- 2026-07-14 · T-011 · Title -->
+2026-08-21 · T-004 · Ignore local docs and skills directories
+  VERIFY: `git check-ignore docs/example.md skills/example/SKILL.md` exits 0.
 2026-08-21 · T-003 · Fix Ansible collection pin for CI
   VERIFY: `ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-galaxy collection install -r ansible/requirements.yml -p /tmp/opsbeacon-ansible-collections-ci2 --force` resolves; `ANSIBLE_COLLECTIONS_PATH=/tmp/opsbeacon-ansible-collections-ci2 ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook -i ansible/inventory.example.ini ansible/playbook.yml --syntax-check` passes; GitHub Actions `CI` on `main` passes.
 2026-08-21 · T-001 · Implement OpsBeacon V1

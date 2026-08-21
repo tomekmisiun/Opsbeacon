@@ -24,3 +24,5 @@ ansible/inventory.ini
 /.codex/
 /.cursor/
 /CLAUDE.md
+/docs/
+/skills/
