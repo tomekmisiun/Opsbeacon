@@ -1,5 +1,8 @@
 # Decision log
 
+## D-006 (2026-08-21) Ansible Posix Stable Range
+**Decision**: Pin `ansible.posix` to `>=2.2.0,<3.0.0`. **Why**: Galaxy does not publish stable `3.x` releases, so `>=3.12.0` breaks CI dependency resolution. **Instead of**: leaving the collection unbounded or requiring pre-releases. **Consequences**: major collection upgrades need an explicit CI-verified task.
+
 ## D-005 (2026-08-21) HTTP Failure Status Semantics
 **Decision**: Treat monitor responses with HTTP status `<400` as UP and `>=400` as DOWN. **Why**: uptime should reflect user-visible HTTP failures, not only network transport failures. **Instead of**: recording every completed HTTP response as UP. **Consequences**: 4xx/5xx responses are stored with their status code and counted as downtime.
 
