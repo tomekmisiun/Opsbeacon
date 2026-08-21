@@ -24,7 +24,7 @@ def run_http_check(
         response = client.get(monitor.url)
         result = CheckResult(
             monitor_id=monitor.id,
-            status=CheckStatus.UP,
+            status=CheckStatus.UP if response.status_code < 400 else CheckStatus.DOWN,
             http_status_code=response.status_code,
             response_time_ms=round((perf_counter() - started) * 1000),
         )

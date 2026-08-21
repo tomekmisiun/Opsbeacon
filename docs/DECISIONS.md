@@ -1,5 +1,8 @@
 # Decision log
 
+## D-005 (2026-08-21) HTTP Failure Status Semantics
+**Decision**: Treat monitor responses with HTTP status `<400` as UP and `>=400` as DOWN. **Why**: uptime should reflect user-visible HTTP failures, not only network transport failures. **Instead of**: recording every completed HTTP response as UP. **Consequences**: 4xx/5xx responses are stored with their status code and counted as downtime.
+
 ## D-004 (2026-08-21) Generic Attribution Guard
 **Decision**: Block attribution trailers and generated/written-by phrasing generically in hooks and CI. **Why**: the guardrails should enforce the project rule without naming specific tools in project artifacts. **Instead of**: maintaining a tool-name denylist. **Consequences**: `Co-Authored-By` trailers are not allowed in this repo.
 

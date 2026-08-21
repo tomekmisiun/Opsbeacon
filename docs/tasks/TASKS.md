@@ -17,7 +17,7 @@ T-002 · Add Terraform/ECS V2 plan · (Phase 1)
 <!-- Move here with completion date, newest on top: -->
 <!-- 2026-07-14 · T-011 · Title -->
 2026-08-21 · T-001 · Implement OpsBeacon V1
-  VERIFY: `.venv/bin/pytest` passed 8 tests; `.venv/bin/ruff check .` passed; `docker compose config` passed; `ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook -i ansible/inventory.example.ini ansible/playbook.yml --syntax-check` passed; `docker compose up --build -d` started db/web/worker; `curl --fail http://localhost:8000/`, `/health`, and `/version` passed.
+  VERIFY: `.venv/bin/pytest` passed 10 tests; `.venv/bin/ruff check .` passed; `docker compose config` passed; `ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook -i ansible/inventory.example.ini ansible/playbook.yml --syntax-check` passed; `docker compose up --build -d` started db/web/worker; `curl --fail http://localhost:8000/`, `/health`, and `/version` passed.
 
 ## Parked / blocked
 <!-- Waiting on decision/external thing. Note WHAT unblocks it. -->
