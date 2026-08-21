@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="detail-head">
+  <div>
+    <a href="/" class="back">Dashboard</a>
+    <h1>{{ monitor.name }}</h1>
+    <p class="url">{{ monitor.url }}</p>
+  </div>
+  <span class="status status-{{ summary.latest_status.value | lower }}">{{ summary.latest_status.value }}</span>
+</section>
+
+<dl class="metrics wide">
+  <div><dt>Uptime</dt><dd>{{ "%.2f"|format(uptime) }}%</dd></div>
+  <div><dt>Average latency</dt><dd>{% if avg_response is not none %}{{ avg_response }} ms{% else %}n/a{% endif %}</dd></div>
+  <div><dt>Latest HTTP</dt><dd>{{ summary.latest_http_status_code or "n/a" }}</dd></div>
+  <div><dt>Last checked</dt><dd>{% if summary.latest_checked_at %}{{ summary.latest_checked_at.strftime("%Y-%m-%d %H:%M:%S UTC") }}{% else %}Never{% endif %}</dd></div>
+</dl>
+
+<form method="post" action="/monitors/{{ monitor.id }}/check" class="single-action">
+  <button type="submit">Run check</button>
+</form>
+
+<table>
+  <thead>
+    <tr><th>Checked at</th><th>Status</th><th>HTTP</th><th>Latency</th><th>Error</th></tr>
+  </thead>
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <td>{{ result.checked_at.strftime("%Y-%m-%d %H:%M:%S UTC") }}</td>
+      <td><span class="status status-{{ result.status.value | lower }}">{{ result.status.value }}</span></td>
+      <td>{{ result.http_status_code or "n/a" }}</td>
+      <td>{% if result.response_time_ms is not none %}{{ result.response_time_ms }} ms{% else %}n/a{% endif %}</td>
+      <td>{{ result.error_message or "" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

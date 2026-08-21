@@ -1,0 +1,18 @@
+services:
+  web:
+    restart: unless-stopped
+
+    ports: !override
+      - "127.0.0.1:8000:8000"
+
+    environment:
+      APP_ENV: production
+
+  worker:
+    restart: unless-stopped
+
+    environment:
+      APP_ENV: production
+
+  db:
+    restart: unless-stopped

@@ -1,0 +1,12 @@
+- name: reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+
+- name: restart opsbeacon
+  community.docker.docker_compose_v2:
+    project_src: "{{ opsbeacon_app_dir }}"
+    files:
+      - compose.yaml
+      - compose.prod.yaml
+    state: restarted

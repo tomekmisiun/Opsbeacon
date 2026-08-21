@@ -1,0 +1,7 @@
+- name: Provision OpsBeacon host
+  hosts: production
+  become: true
+  vars_files:
+    - group_vars/all/main.yml
+  roles:
+    - common

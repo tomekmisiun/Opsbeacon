@@ -1,11 +1,26 @@
-# Local AI tooling
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+.coverage.*
+*.egg-info/
+dist/
+build/
+*.log
+
+# Local Ansible inventory may contain hostnames/IPs.
+ansible/inventory.ini
+
+# Local tooling
 /.agents/
 /.claude/
 /.codex/
-/.cursor/rules/
-/docs/
-/scripts/
-/skills/
-/AGENTS.md
+/.cursor/
 /CLAUDE.md
-gi

@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Secret scan on staged changes. Blocks the commit if gitleaks finds anything.
+# Install gitleaks: https://github.com/gitleaks/gitleaks (brew install gitleaks / apt / binary)
+if command -v gitleaks >/dev/null 2>&1; then
+  if ! gitleaks protect --staged --redact --no-banner; then
+    echo "" >&2
+    echo "✗ pre-commit: possible secret in staged changes (see above)." >&2
+    echo "  Remove it and use an env var instead. If it's a false positive, add a .gitleaksignore entry." >&2
+    exit 1
+  fi
+else
+  echo "⚠ pre-commit: gitleaks not installed — secret scan SKIPPED (CI will still run it)." >&2
+fi
+exit 0

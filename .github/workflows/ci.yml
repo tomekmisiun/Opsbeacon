@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[dev]"
+
+      - name: Install Ansible
+        run: python -m pip install ansible-core
+      
+      - name: Install rsync
+        run: sudo apt-get update && sudo apt-get install -y rsync
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+
+      - name: Check Ansible syntax
+        run: ansible-playbook -i ansible/inventory.example.ini ansible/playbook.yml --syntax-check
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Test
+        run: pytest
+
+      - name: Docker image build
+        run: docker build .
+
+  conventions:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: PR title follows Conventional Commits
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "$TITLE" | grep -Eq '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?(!)?: .+' \
+            || { echo "::error::PR title must follow Conventional Commits: type(scope): summary"; exit 1; }
+
+      - name: No tool attribution in PR commits
+        run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+
+          if git log "origin/${{ github.base_ref }}..HEAD" --format=%B \
+             | grep -Eiq 'co-authored-by:|generated (with|by)|written (with|by)|🤖'; then
+            echo "::error::Tool attribution found in commit messages on this branch. Local hooks were bypassed; rewrite the messages before merging."
+            exit 1
+          fi
+
+      - name: Commit subjects follow Conventional Commits
+        run: |
+          git log "origin/${{ github.base_ref }}..HEAD" --no-merges --format=%s | while IFS= read -r s; do
+            echo "$s" | grep -Eq '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?(!)?: .+' \
+              || { echo "::error::Non-conventional commit subject: $s"; exit 1; }
+          done
+
+  secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
