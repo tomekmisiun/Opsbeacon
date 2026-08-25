@@ -17,7 +17,7 @@ OpsBeacon is a public demo app for monitoring HTTP services. It uses FastAPI, Po
 
 ```mermaid
 flowchart TD
-    Browser[Recruiter / Browser] --> Nginx
+    Browser[Browser] --> Nginx
     Nginx --> Web[FastAPI Web]
     Web --> DB[(PostgreSQL)]
     Worker[Worker] --> DB
